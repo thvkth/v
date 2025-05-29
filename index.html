@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>welcometomyblogpage:)</title>
-    <!-- Favicon for browser tab -->
-    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuFVYM7BSZ8hStE1zM48aLPjKcGt1q9MY3lA&s">
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
+            min-width: 320px;
         }
         .center {
-            text-align: center;
+            text-align: left;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 1px;
+            justify-content: flex-start;
+            gap: 0px;
         }
         .green-text {
             color: green;
@@ -47,6 +50,9 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        .sidebar.hidden {
+            display: none;
+        }
         .sidebar a {
             display: block;
             margin: 10px 0;
@@ -55,6 +61,20 @@
         }
         .sidebar a:hover {
             color: #007bff;
+        }
+        .sidebar button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .sidebar button:hover {
+            background-color: #555;
         }
         table {
             border-collapse: collapse;
@@ -75,8 +95,8 @@
             margin: 20px auto;
         }
         .logo {
-            width: 50px;
-            height: 50px;
+            width: 160px;
+            height: 180px;
         }
         .email-form {
             margin-top: 20px;
@@ -97,40 +117,60 @@
         .email-form button:hover {
             background-color: #555;
         }
+        .hidden-content {
+            display: none;
+        }
+        .hidden-content.visible {
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                left: 0;
+                top: 60px;
+                position: relative;
+            }
+            .logo {
+                width: 100px;
+                height: 120px;
+            }
+            table {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <a href="#home">Home</a>
+    <button onclick="toggleSidebar()" style="position: fixed; top: 80px; left: 20px;">More About Me</button>
+    <nav class="top-nav" role="navigation" aria-label="Main navigation">
+        <a href="#home" aria-current="page">Home</a>
         <a href="#about">About</a>
         <a href="#favourites">Favourites</a>
         <a href="#contact">Contact</a>
     </nav>
 
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar">
-        <a href="https://www.youtube.com/watch?v=1LDJRLBVZi8">Favorite Cartoon</a>
-        <a href="https://x.com">My Instagram</a>
-        <a href="https://example.com">Other Link</a>
-        <button oneclick="hidesidebar()">Cancel</button>
+    <nav class="sidebar hidden" id="sidebar" role="navigation" aria-label="Secondary navigation">
+        <a href="https://www.youtube.com/watch?v=1LDJRLBVZi8" target="_blank">Favorite Cartoon</a>
+        <a href="https://x.com" target="_blank">My X Profile</a>
+        <a href="https://example.com" target="_blank">Other Link</a>
+        <button onclick="toggleSidebar()" aria-label="Cancel sidebar">Cancel</button>
     </nav>
 
-    <!-- Main Content -->
     <section id="home">
         <h1 class="center">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuFVYM7BSZ8hStE1zM48aLPjKcGt1q9MY3lA&s" alt="Blog Logo" class="logo">
-            Hello guys     </h1>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuFVYM7BSZ8hStE1zM48aLPjKcGt1q9MY3lA&s" alt="V's Blog Logo" class="logo">
+            Hello guys
+        </h1>
         <p class="green-text">This is V.<br>Nice to meet u</p>
     </section>
 
     <section id="about">
         <p title="Kimtaehyung">V</p>
-        <img src="https://img-03.stickers.cloud/packs/24db6901-974f-4774-af54-f600d3a27e3f/webp/604e3905-f1eb-4b8b-afa4-c1b4e8937474.webp" width="300" height="300" alt="Blog image">
+        <img src="https://img-03.stickers.cloud/packs/24db6901-974f-4774-af54-f600d3a27e3f/webp/604e3905-f1eb-4b8b-afa4-c1b4e8937474.webp" width="300" height="300" alt="V's profile image">
     </section>
 
     <section id="favourites">
-        <h2>Favorite Brands</h2>
+        <h2>Favorite Clothing Brands</h2>
         <table>
             <tr>
                 <th>Brand</th>
@@ -139,42 +179,57 @@
             </tr>
             <tr>
                 <td>Nike</td>
-                <td>A</td>
+                <td>Air Max</td>
                 <td>2012</td>
             </tr>
             <tr>
                 <td>Adidas</td>
-                <td>B</td>
+                <td>Ultra Boost</td>
                 <td>2013</td>
             </tr>
             <tr>
                 <td>New Balance</td>
-                <td>C</td>
+                <td>Fresh Foam</td>
                 <td>2014</td>
             </tr>
-            <tr>
-                <td>KFC</td>
-                <td>D</td>
-                <td>2015</td>
-            </tr>
         </table>
+        <button onclick="more()" style="display: block; margin: 10px auto; padding: 8px 16px; background-color: #333; color: white; border: none; cursor: pointer;">More Brands</button>
+        <div id="more-brands" class="hidden-content">
+            <table>
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                </tr>
+                <tr>
+                    <td>Puma</td>
+                    <td>Suede Classic</td>
+                    <td>2015</td>
+                </tr>
+                <tr>
+                    <td>Reebok</td>
+                    <td>Classic Leather</td>
+                    <td>2016</td>
+                </tr>
+            </table>
+        </div>
 
         <h2>Favorite People</h2>
         <table>
             <tr>
                 <th>Name</th>
                 <th>Birthday</th>
-                <th>Fav Film</th>
+                <th>Favorite Film</th>
             </tr>
             <tr>
-                <td>A</td>
-                <td>2/1</td>
-                <td>sabj</td>
+                <td>Alice</td>
+                <td>February 1</td>
+                <td>Spirited Away</td>
             </tr>
             <tr>
-                <td>B</td>
-                <td>2/2</td>
-                <td>jwds</td>
+                <td>Bob</td>
+                <td>February 2</td>
+                <td>Inception</td>
             </tr>
         </table>
     </section>
@@ -183,8 +238,8 @@
         <h1>my blog page is still updating</h1>
         <p>so stay tuned ;)</p>
         <div class="email-form">
-            <label for="email">Plz type your email here:</label>
-            <input type="email" id="email" name="email" placeholder="Your email">
+            <label for="email">Please type your email here:</label>
+            <input type="email" id="email" name="email" placeholder="Your email" aria-required="true">
             <button onclick="handleEmail()">Submit</button>
         </div>
     </section>
@@ -192,12 +247,27 @@
     <script>
         function handleEmail() {
             const email = document.getElementById('email').value;
-            if (email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(email)) {
                 alert('Thank you for submitting your email: ' + email);
-                document.getElementById('email').value = ''; // Clear input
+                document.getElementById('email').value = '';
             } else {
-                alert('Please enter a valid email address.');
+                alert('Please enter a valid email address (e.g., example@domain.com).');
             }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('hidden');
+            } else {
+                alert('Error: Sidebar element not found.');
+            }
+        }
+
+        function more() {
+            const moreContent = document.getElementById('more-brands');
+            moreContent.classList.toggle('visible');
         }
     </script>
 </body>
