@@ -40,10 +40,23 @@
         .top-nav a:hover {
             color: #ddd;
         }
+        .toggle-sidebar {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            padding: 8px 16px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .toggle-sidebar:hover {
+            background-color: #555;
+        }
         .sidebar {
             width: 200px;
             position: fixed;
-            top: 100px;
+            top: 120px;
             left: 20px;
             background-color: #fff;
             padding: 15px;
@@ -90,6 +103,9 @@
             background-color: #333;
             color: white;
         }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
         img {
             display: block;
             margin: 20px auto;
@@ -117,6 +133,10 @@
         .email-form button:hover {
             background-color: #555;
         }
+        #email-message {
+            margin-top: 10px;
+            font-size: 14px;
+        }
         .hidden-content {
             display: none;
         }
@@ -127,8 +147,15 @@
             .sidebar {
                 width: 100%;
                 left: 0;
-                top: 60px;
+                top: 120px;
                 position: relative;
+            }
+            .toggle-sidebar {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+                margin-bottom: 10px;
             }
             .logo {
                 width: 100px;
@@ -141,7 +168,7 @@
     </style>
 </head>
 <body>
-    <button onclick="toggleSidebar()" style="position: fixed; top: 80px; left: 20px;">More About Me</button>
+    <button class="toggle-sidebar" onclick="toggleSidebar()" aria-controls="sidebar" aria-expanded="false">More About Me</button>
     <nav class="top-nav" role="navigation" aria-label="Main navigation">
         <a href="#home" aria-current="page">Home</a>
         <a href="#about">About</a>
@@ -150,15 +177,15 @@
     </nav>
 
     <nav class="sidebar hidden" id="sidebar" role="navigation" aria-label="Secondary navigation">
-        <a href="https://www.youtube.com/watch?v=1LDJRLBVZi8" target="_blank">Favorite Cartoon</a>
-        <a href="https://x.com" target="_blank">My X Profile</a>
-        <a href="https://example.com" target="_blank">Other Link</a>
-        <button onclick="toggleSidebar()" aria-label="Cancel sidebar">Cancel</button>
+        <a href="https://www.youtube.com/watch?v=1LDJRLBVZi8" target="_blank" rel="noopener">Favorite Cartoon</a>
+        <a href="https://x.com" target="_blank" rel="noopener">My X Profile</a>
+        <a href="https://example.com" target="_blank" rel="noopener">Other Link</a>
+        <button onclick="toggleSidebar()" aria-label="Close sidebar">Cancel</button>
     </nav>
 
     <section id="home">
         <h1 class="center">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuFVYM7BSZ8hStE1zM48aLPjKcGt1q9MY3lA&s" alt="V's Blog Logo" class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuFVYM7BSZ8hStE1zM48aLPjKcGt1q9MY3lA&s" alt="V's Blog Logo, featuring a stylized design" class="logo">
             Hello guys
         </h1>
         <p class="green-text">This is V.<br>Nice to meet u</p>
@@ -166,7 +193,7 @@
 
     <section id="about">
         <p title="Kimtaehyung">V</p>
-        <img src="https://img-03.stickers.cloud/packs/24db6901-974f-4774-af54-f600d3a27e3f/webp/604e3905-f1eb-4b8b-afa4-c1b4e8937474.webp" width="300" height="300" alt="V's profile image">
+        <img src="https://img-03.stickers.cloud/packs/24db6901-974f-4774-af54-f600d3a27e3f/webp/604e3905-f1eb-4b8b-afa4-c1b4e8937474.webp" width="300" height="300" alt="Profile image of V, showcasing a personal portrait">
     </section>
 
     <section id="favourites">
@@ -193,7 +220,7 @@
                 <td>2014</td>
             </tr>
         </table>
-       <button class="toggle-sidebar" onclick="toggleSidebar()">More About Me</button>
+        <button id="more-brands-btn" onclick="more()" aria-expanded="false" style="display: block; margin: 10px auto; padding: 8px 16px; background-color: #333; color: white; border: none; cursor: pointer;">More Brands</button>
         <div id="more-brands" class="hidden-content">
             <table>
                 <tr>
@@ -241,6 +268,7 @@
             <label for="email">Please type your email here:</label>
             <input type="email" id="email" name="email" placeholder="Your email" aria-required="true">
             <button onclick="handleEmail()">Submit</button>
+            <div id="email-message"></div>
         </div>
     </section>
 
@@ -248,18 +276,25 @@
         function handleEmail() {
             const email = document.getElementById('email').value;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const messageDiv = document.getElementById('email-message');
+            messageDiv.textContent = '';
             if (emailRegex.test(email)) {
-                alert('Thank you for submitting your email: ' + email);
+                messageDiv.textContent = `Thank you for submitting your email: ${email}`;
+                messageDiv.style.color = 'green';
                 document.getElementById('email').value = '';
             } else {
-                alert('Please enter a valid email address (e.g., example@domain.com).');
+                messageDiv.textContent = 'Please enter a valid email address (e.g., example@domain.com).';
+                messageDiv.style.color = 'red';
             }
+            setTimeout(() => messageDiv.textContent = '', 3000);
         }
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
+            const button = document.querySelector('.toggle-sidebar');
+            if (sidebar && button) {
                 sidebar.classList.toggle('hidden');
+                button.setAttribute('aria-expanded', !sidebar.classList.contains('hidden'));
             } else {
                 alert('Error: Sidebar element not found.');
             }
@@ -267,7 +302,15 @@
 
         function more() {
             const moreContent = document.getElementById('more-brands');
-            moreContent.classList.toggle('visible');
+            const button = document.getElementById('more-brands-btn');
+            if (moreContent && button) {
+                moreContent.classList.toggle('visible');
+                const isExpanded = moreContent.classList.contains('visible');
+                button.setAttribute('aria-expanded', isExpanded);
+                button.textContent = isExpanded ? 'Show Less' : 'More Brands';
+            } else {
+                alert('Error: More brands content not found.');
+            }
         }
     </script>
 </body>
