@@ -14,15 +14,18 @@ body {
     gap: 2px; /* Simplified gap */
 }
 
-.sidebar {
-    width: 200px;
+.toggle-sidebar {
     position: fixed;
-    top: 100px;
+    top: 80px;
     left: 20px;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.toggle-sidebar:hover {
+    background-color: #555;
 }
 
 @media (max-width: 600px) {
